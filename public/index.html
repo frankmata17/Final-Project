@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Mania</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Movie Mania</h1>
+        <nav>
+            <a href="#" id="home-link">Home</a>
+            <a href="#" id="favorites-link">Favorites</a>
+        </nav>
+    </header>
+    <section id="tagline">
+        <p>Your ultimate source for top 100 movies, reviews, and favorites!</p>
+    </section>
+    <main id="content">
+        <div id="movies-container" class="movies-container">
+        </div>
+    </main>
+    <footer>
+        <p>&copy; <span id="year"></span> Movie Mania. All rights reserved.</p>
+    </footer>
+    <script src="./js/main.js" type="module"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
