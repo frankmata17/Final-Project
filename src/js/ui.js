@@ -1,50 +1,53 @@
-import { addFavorite, removeFavorite, getFavorites } from './favorites.js';
-
 export function renderMovies(movies) {
-    const content = document.getElementById('content');
-    content.innerHTML = movies.map(movie => `
-        <div class="movie-card" data-id="${movie.id}">
-            <h2>${movie.title}</h2>
-            <p>${movie.description}</p>
-            <button class="favorite-btn">Favorite</button>
-        </div>
-    `).join('');
-    document.querySelectorAll('.favorite-btn').forEach(button => {
-        button.addEventListener('click', handleFavorite);
+    if (!Array.isArray(movies)) {
+        console.error('Expected an array of movies, but got:', movies);
+        const moviesContainer = document.getElementById('movies-container');
+        moviesContainer.innerHTML = '<p>Unable to fetch movies at this time. Please try again later.</p>';
+        return;
+    }
+
+    const moviesContainer = document.getElementById('movies-container');
+    moviesContainer.innerHTML = '';
+
+    movies.forEach(movie => {
+        const movieCard = createMovieCard(movie);
+        moviesContainer.appendChild(movieCard);
     });
 }
 
-export function renderFavorites(favorites) {
-    const content = document.getElementById('content');
-    if (favorites.length === 0) {
-        content.innerHTML = '<p>No favorite movies yet.</p>';
-    } else {
-        content.innerHTML = favorites.map(movie => `
-            <div class="movie-card" data-id="${movie.id}">
-                <h2>${movie.title}</h2>
-                <p>${movie.description}</p>
-                <button class="remove-favorite-btn">Remove Favorite</button>
-            </div>
-        `).join('');
-        document.querySelectorAll('.remove-favorite-btn').forEach(button => {
-            button.addEventListener('click', handleRemoveFavorite);
-        });
-    }
-}
+function createMovieCard(movie) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
 
-function handleFavorite(event) {
-    const movieId = event.target.closest('.movie-card').dataset.id;
-    const movie = findMovieById(movieId);
-    addFavorite(movie);
-}
+    const image = document.createElement('img');
+    image.src = movie.image || 'https://via.placeholder.com/150';
+    image.alt = movie.title;
 
-function handleRemoveFavorite(event) {
-    const movieId = event.target.closest('.movie-card').dataset.id;
-    removeFavorite(movieId);
-    renderFavorites(getFavorites());
-}
+    const content = document.createElement('div');
+    content.className = 'movie-card-content';
 
-function findMovieById(id) {
-    const movies = JSON.parse(localStorage.getItem('movies')) || [];
-    return movies.find(movie => movie.id == id);
+    const title = document.createElement('h2');
+    title.className = 'movie-card-title';
+    title.textContent = movie.title;
+
+    const description = document.createElement('p');
+    description.className = 'movie-card-description';
+    description.textContent = movie.synopsis || 'No description available.';
+
+    const genre = document.createElement('p');
+    genre.className = 'movie-card-genre';
+    genre.textContent = `Genre: ${movie.genre || 'N/A'}`;
+
+    const rank = document.createElement('p');
+    rank.className = 'movie-card-rank';
+    rank.textContent = `Rank: ${movie.rank || 'N/A'}`;
+
+    content.appendChild(title);
+    content.appendChild(description);
+    content.appendChild(genre);
+    content.appendChild(rank);
+    card.appendChild(image);
+    card.appendChild(content);
+
+    return card;
 }
