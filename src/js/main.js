@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const genreSelect = document.getElementById('genre-select');
     const sortSelect = document.getElementById('sort-select');
     const removeFiltersButton = document.getElementById('remove-filters');
+    const scrollToTopButton = document.getElementById('scroll-to-top');
 
     let movies = await fetchTop100Movies();
 
@@ -26,16 +27,52 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <button class="favorite-button" data-id="${movie.id}">Add to Favorites</button>
                 </div>
             `;
+            movieCard.addEventListener('click', () => expandMovieCard(movie));
             moviesContainer.appendChild(movieCard);
         });
         document.querySelectorAll('.favorite-button').forEach(button => {
             button.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const movieId = e.target.dataset.id;
                 const movie = movies.find(m => m.id == movieId);
                 addFavorite(movie);
                 showNotification(`${movie.title} has been added to your favorites!`);
             });
         });
+    }
+
+    function expandMovieCard(movie) {
+        const overlay = document.createElement('div');
+        overlay.classList.add('movie-card-overlay');
+        document.body.appendChild(overlay);
+
+        const expandedCard = document.createElement('div');
+        expandedCard.classList.add('movie-card', 'movie-card-expanded');
+        expandedCard.innerHTML = `
+            <img src="${movie.image}" alt="${movie.title}">
+            <div class="movie-card-content">
+                <h2 class="movie-card-title">${movie.title}</h2>
+                <p class="movie-card-description">${movie.description}</p>
+                <p class="movie-card-genre">Genre: ${movie.genre}</p>
+                <p class="movie-card-year">Year: ${movie.year}</p>
+                <p class="movie-card-rank">Rank: ${movie.rank}</p>
+                <button class="favorite-button" data-id="${movie.id}">Add to Favorites</button>
+                <button class="close-button">Close</button>
+            </div>
+        `;
+
+        expandedCard.querySelector('.close-button').addEventListener('click', () => {
+            document.body.removeChild(expandedCard);
+            document.body.removeChild(overlay);
+        });
+
+        expandedCard.querySelector('.favorite-button').addEventListener('click', (e) => {
+            e.stopPropagation();
+            addFavorite(movie);
+            showNotification(`${movie.title} has been added to your favorites!`);
+        });
+
+        document.body.appendChild(expandedCard);
     }
 
     function showNotification(message) {
@@ -98,4 +135,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     displayMovies(movies);
+
+    // Scroll to Top Button functionality
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+            scrollToTopButton.style.display = 'block';
+        } else {
+            scrollToTopButton.style.display = 'none';
+        }
+    });
+
+    scrollToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });
