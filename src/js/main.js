@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${movie.image}" alt="${movie.title}">
                 <div class="movie-card-content">
                     <h2 class="movie-card-title">${movie.title}</h2>
-                    <p class="movie-card-description">${movie.description}</p>
                     <p class="movie-card-genre">Genre: ${movie.genre}</p>
                     <p class="movie-card-year">Year: ${movie.year}</p>
                     <p class="movie-card-rank">Rank: ${movie.rank}</p>
