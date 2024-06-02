@@ -5,6 +5,7 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     background-color: black;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 body {
@@ -20,6 +21,7 @@ header {
     color: #fff;
     padding: 10px 0;
     text-align: center;
+    width: 100%; /* Ensure header takes full width */
 }
 
 #tagline {
@@ -46,10 +48,12 @@ nav a:hover {
 main {
     flex: 1;
     padding: 20px;
+    width: 100%; /* Ensure main takes full width */
 }
 
 #filters {
     display: flex;
+    flex-wrap: wrap; /* Allow filters to wrap on smaller screens */
     justify-content: space-between;
     margin-bottom: 20px;
 }
@@ -60,20 +64,13 @@ main {
     font-size: 1em;
     border: 1px solid #ddd;
     border-radius: 5px;
-}
-
-#filters input {
-    flex: 1;
-    margin-right: 10px;
-}
-
-#filters select {
-    flex: 0.5;
-    margin-left: 10px;
+    flex: 1; /* Allow inputs and selects to grow */
+    margin: 5px 0; /* Ensure spacing between elements */
 }
 
 #remove-filters {
     padding: 10px 20px;
+    margin: 5px;
     font-size: 1em;
     border: none;
     border-radius: 5px;
@@ -81,6 +78,8 @@ main {
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s;
+    flex: 1; /* Allow button to grow */
+    margin: 5px 0;
 }
 
 #remove-filters:hover {
@@ -100,6 +99,7 @@ main {
     overflow: hidden;
     transition: transform 0.3s;
 }
+
 .movie-card:not(.movie-card-expanded):hover {
     transform: scale(1.05);
 }
@@ -134,11 +134,11 @@ main {
     color: #888;
     margin-top: 5px;
 }
+
 .movie-card-expanded {
     position: fixed;
     top: 10%;
     left: 40%;
-    transform: translate(0, 0);
     width: 90%;
     max-width: 300px;
     max-height: 80%;
@@ -164,6 +164,7 @@ main {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 .close-button {
     display: block;
     width: 100%;
@@ -239,6 +240,7 @@ footer {
     color: #fff;
     padding: 10px 0;
     text-align: center;
+    width: 100%; /* Ensure footer takes full width */
 }
 
 .scroll-to-top {
@@ -260,6 +262,7 @@ footer {
 .scroll-to-top:hover {
     background-color: #ff3333;
 }
+
 /* Media Queries */
 
 /* For tablets and smaller desktops */
@@ -274,19 +277,35 @@ footer {
     header, #tagline, nav a {
         font-size: 0.9em;
     }
+    header, main, body, footer {
+        max-width: 100%;
+        width: 100%;
+    }
     
     .movies-container {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
+    .movie-card-expanded {
+        top: 5%;
+        left: 15%;
+        width: 80%;
+        max-width: 70%;
+        max-height: 90%;
+    }
 }
 
 @media (max-width: 480px) {
-    header, #tagline, nav a {
+    body, header, main, footer {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    header, #tagline {
         font-size: 0.8em;
         padding: 5px;
     }
-    
+
     .movies-container {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -295,13 +314,19 @@ footer {
     nav a {
         display: block;
         margin: 5px 0;
+        font-size: large;
     }
+
+    #filters {
+        flex-direction: column;
+        margin: 25px;
+    }
+
     .movie-card-expanded {
         top: 10%;
-        left: 50%;
-        transform: translate(0, 0);
+        left: 10%;
         width: 90%;
-        max-width: 90%;
+        max-width: 70%;
         max-height: 80%;
     }
 }
