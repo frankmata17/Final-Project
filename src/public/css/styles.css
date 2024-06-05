@@ -5,7 +5,7 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     background-color: black;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
 }
 
 body {
@@ -18,10 +18,19 @@ body {
 
 header {
     background-color: #333;
+    position: relative;
+    width: 100%;
+    padding: 40px;
     color: #fff;
-    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    width: 100%; /* Ensure header takes full width */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
 }
 
 #tagline {
@@ -41,46 +50,49 @@ nav a {
 }
 
 nav a:hover {
-    color: #ffcc00; /* Change this to the desired hover color */
+    color: #ffcc00;
     text-decoration: underline;
 }
 
 main {
     flex: 1;
     padding: 20px;
-    width: 100%; /* Ensure main takes full width */
+    width: 100%;
+    max-width: 100%;
+    overflow-y:visible;
 }
 
 #filters {
     display: flex;
-    flex-wrap: wrap; /* Allow filters to wrap on smaller screens */
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
-#filters input, 
+#filters input,
 #filters select {
     padding: 10px;
-    font-size: 1em;
+    font-size: 0.9em;
     border: 1px solid #ddd;
     border-radius: 5px;
-    flex: 1; /* Allow inputs and selects to grow */
-    margin: 5px 0; /* Ensure spacing between elements */
+    flex: 0;
+    margin: 3px;
 }
 
 #remove-filters {
-    padding: 10px 20px;
+    padding: 5px 8px;
     margin: 5px;
-    font-size: 1em;
+    font-size: 0.9em;
     border: none;
     border-radius: 5px;
     background-color: #f44336;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s;
-    flex: 1; /* Allow button to grow */
-    margin: 5px 0;
+    flex: none;
 }
+
 
 #remove-filters:hover {
     background-color: #d32f2f;
@@ -90,6 +102,7 @@ main {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
+    width: 100%;
 }
 
 .movie-card {

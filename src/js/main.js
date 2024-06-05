@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${movie.image}" alt="${movie.title}">
                 <div class="movie-card-content">
                     <h2 class="movie-card-title">${movie.title}</h2>
-                    <p class="movie-card-genre">Genre: ${movie.genre}</p>
+                    <p class="movie-card-genre">Genre: ${Array.isArray(movie.genre) ? movie.genre.join(', ') : movie.genre}</p>
                     <p class="movie-card-year">Year: ${movie.year}</p>
                     <p class="movie-card-rank">Rank: ${movie.rank}</p>
                     <button class="favorite-button" data-id="${movie.id}">Add to Favorites</button>
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="movie-card-content">
                 <h2 class="movie-card-title">${movie.title}</h2>
                 <p class="movie-card-description">${movie.description}</p>
-                <p class="movie-card-genre">Genre: ${movie.genre}</p>
+                <p class="movie-card-genre">Genre: ${Array.isArray(movie.genre) ? movie.genre.join(', ') : movie.genre}</p>
                 <p class="movie-card-year">Year: ${movie.year}</p>
                 <p class="movie-card-rank">Rank: ${movie.rank}</p>
                 <button class="favorite-button" data-id="${movie.id}">Add to Favorites</button>
@@ -97,11 +97,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             );
         }
 
-        const selectedGenre = genreSelect.value;
+        const selectedGenre = genreSelect.value.toLowerCase();
         if (selectedGenre !== 'all') {
-            filteredMovies = filteredMovies.filter(movie =>
-                movie.genre.toLowerCase().includes(selectedGenre)
-            );
+            filteredMovies = filteredMovies.filter(movie => {
+                if (Array.isArray(movie.genre)) {
+                    return movie.genre.some(genre => genre.toLowerCase() === selectedGenre);
+                } else if (typeof movie.genre === 'string') {
+                    return movie.genre.toLowerCase() === selectedGenre;
+                }
+                return false;
+            });
         }
 
         const selectedSort = sortSelect.value;
@@ -135,7 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     displayMovies(movies);
 
-    // Scroll to Top Button functionality
     window.addEventListener('scroll', () => {
         if (window.scrollY > 200) {
             scrollToTopButton.style.display = 'block';
